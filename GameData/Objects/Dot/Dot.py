@@ -1,4 +1,4 @@
-from ..Keys.Keys import point_value, is_power_up
+from ...Keys.Keys import point_value, is_power_up
 
 class Dot():
     def __init__(self):

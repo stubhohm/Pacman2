@@ -1,5 +1,5 @@
 from ..Tile.TileTypes import Tile
-from ..Keys.Keys import ghost_names, blinky, clyde, inky, pinky
+from ...Keys.Keys import ghost_names, blinky, clyde, inky, pinky
 from ..Ghosts.GhostList import Blinky, Clyde, Inky, Pinky
 
 class Map():

@@ -1,5 +1,4 @@
 # Directions
-
 up, down, left, right = "up", "down", "left", "right"
 directions = [up, right, down, left]
 
@@ -9,3 +8,7 @@ ghost_names = [blinky, clyde, inky, pinky]
 
 # Dot Keys
 point_value, is_power_up = "point value", "is power up"
+
+# Gameplay Keys
+quit_game = "quit game"
+select = "select"

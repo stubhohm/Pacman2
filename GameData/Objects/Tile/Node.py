@@ -1,5 +1,5 @@
 from .Path import Path, Dot
-from ..Keys.Keys import up, right, down, left, directions
+from ...Keys.Keys import up, right, down, left, directions
 
 class Node(Path):
     def __init__(self):

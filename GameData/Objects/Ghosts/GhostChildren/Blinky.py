@@ -1,5 +1,5 @@
 from ..Ghost import Ghost
-from ...Keys.Keys import blinky as new_name
+from ....Keys.Keys import blinky as new_name
 
 class Blinky(Ghost):
     def __init__(self):
