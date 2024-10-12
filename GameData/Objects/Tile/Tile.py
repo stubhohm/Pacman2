@@ -1,23 +1,22 @@
+from ...Keys.Constants import TILE_HEIGHT, TILE_WIDTH
+from ..Vector2.Vector2 import Vector2
+from ..Drawing.Drawing import Drawing
+
 class Tile():
     def __init__(self):
         self._sprite = None
-        self._position:tuple[int,int]
+        self._position:Vector2 = Vector2(0, 0)
         self._passable:bool = True
+        self.drawing = Drawing()
+        self.height = TILE_HEIGHT
+        self.width = TILE_WIDTH
 
-    def is_coordinate(self, new_coordinate:tuple[int,int]):
-        passed = True
-        if type(new_coordinate) != tuple:
-            print('not a tuple')
-            passed = False
-        if passed and len(new_coordinate) != 2:
-            print('not two items')
-            passed = False
-        if passed and (not self.is_int(new_coordinate[0]) or not self.is_int(new_coordinate[-1])):
-            print("one was not an int")
-            passed = False
-        if not passed:
-            print(new_coordinate)
-        return passed  
+    def is_coordinate(self, new_coordinate:Vector2):
+        if type(new_coordinate) != Vector2:
+            print('not a 2d vector: tile')
+            print(type(new_coordinate))
+            return False
+        return True
 
     def is_string(self, test_string:str):
         if type(test_string) !=str:
@@ -49,7 +48,7 @@ class Tile():
     def get_sprite(self):
         return self._sprite
 
-    def set_position(self, new_position:tuple[int, int]):
+    def set_position(self, new_position:Vector2):
         if not self.is_coordinate(new_position):
             return
         self._position = new_position
@@ -61,3 +60,6 @@ class Tile():
 
     def set_sprite(self, sprite):
         self._sprite = sprite
+
+    def draw(self, surface):
+        pass
