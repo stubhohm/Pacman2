@@ -1,6 +1,7 @@
 # Directions
 up, down, left, right, stop = "up", "down", "left", "right", "stop"
-directions = [up, right, down, left, stop]
+directions = [up, down, left, right, stop]
+direction_flips = {up:down, down:up, left:right, right:left}
 
 # Ghost Names
 inky, pinky, blinky, clyde = "Inky", "Pinky", "Blinky", "Clyde"

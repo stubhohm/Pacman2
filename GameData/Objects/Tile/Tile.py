@@ -10,6 +10,8 @@ class Tile():
         self.drawing = Drawing()
         self.height = TILE_HEIGHT
         self.width = TILE_WIDTH
+        self.type = "Base Tile"
+        self.line_color = None
 
     def is_coordinate(self, new_coordinate:Vector2):
         if type(new_coordinate) != Vector2:

@@ -9,6 +9,7 @@ class Path(Tile):
         self.set_is_passable(True)
         self._dot = None
         self.dot_coordinate:Vector2 = Vector2()
+        self.type = "Path"
     
     def add_dot(self, new_dot:Dot):
         if not isinstance(new_dot, Dot):

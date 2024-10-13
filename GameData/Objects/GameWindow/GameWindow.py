@@ -45,24 +45,6 @@ class GameWindow():
         raw_coordinate = Vector2(TILE_WIDTH * position.getX(), TILE_HEIGHT * position.getY())
         self.draw.draw_circle(self.draw_window, radius, raw_coordinate, color, boarder)
 
-    def draw_grid(self):
-        if not DEBUG:
-            return
-        start_color = WHITE
-        end_color = RED
-        for i in range(COLUMNS):
-            color = self.color_mixer.blend_colors(start_color, end_color, (i/COLUMNS))
-            h_pos = (i+1) * TILE_HEIGHT
-            start = Vector2(h_pos ,0)
-            end = Vector2(h_pos ,HEIGHT)
-            self.draw.draw_line(self.draw_window, start, end, color)
-        for i in range(ROWS):
-            color = self.color_mixer.blend_colors(start_color, end_color, (i/ROWS))
-            v_pos = (i+1) * TILE_WIDTH
-            start = Vector2(0, v_pos)
-            end =  Vector2(WIDTH, v_pos)
-            self.draw.draw_line(self.draw_window, start, end, color)
-
     def draw_tiles(self, tiles:list[list[Tile]]):
         for y_row in tiles:
             for tile in y_row:

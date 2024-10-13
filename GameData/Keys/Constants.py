@@ -1,7 +1,7 @@
 start_height = 900
 start_width = 700
 
-DEBUG = False
+DEBUG = True
 
 PI = 3.1415
 
@@ -13,3 +13,5 @@ WIDTH = start_width - (start_width % COLUMNS)
 
 TILE_WIDTH = int(WIDTH / COLUMNS)
 TILE_HEIGHT = int(HEIGHT / ROWS)
+
+FPS = 60

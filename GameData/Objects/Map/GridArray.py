@@ -153,7 +153,7 @@ row_15 = construct_row(dot_nodes, walls, power_ups, empty_tiles, empty_nodes)
 
 
 # row 14
-dot_nodes = (6, 20)
+dot_nodes = (6, 21)
 empty_nodes = (9, 18)
 walls = (10, 17)
 power_ups = ()

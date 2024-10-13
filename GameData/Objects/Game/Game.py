@@ -3,6 +3,7 @@ from ...Dependecies.Dependencies import pygame
 from ..Map.Map import Map
 from ..Tile.TileTypes import Wall, Node, Path
 from ...Keys.Keys import quit_game, select
+from ...Keys.Constants import FPS
 
 class Game():
     def __init__(self):
@@ -12,7 +13,7 @@ class Game():
 
     def init_clock(self):
         self.clock = pygame.time.Clock()
-        self.clock.tick(60)
+        self.clock.tick(FPS)
     
     def init_game_window(self):
         self.window = GameWindow()
@@ -35,5 +36,6 @@ class Game():
             return name
         
     def draw_map(self):
-        self.map.draw(self.window.draw_window)
         self.window.draw_tiles(self.map.get_grid())
+        self.map.draw(self.window.draw_window)
+        

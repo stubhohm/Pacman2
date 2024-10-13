@@ -13,6 +13,10 @@ Pacman_Arrary = [
     Image.load(base_path + "\\Pacman\\Pacman(7).png"),
     Image.load(base_path + "\\Pacman\\Pacman(8).png"),
 ]
+new_list = []
+for image in Pacman_Arrary:
+    new_list.append(Transform.scale_by(image, 1.2))
+Pacman_Arrary = new_list
 
 Ghost_eyes = { 
     up: Image.load(base_path + "\\Eyes\\eyes_up.png"),
@@ -48,4 +52,4 @@ Frightend_Array = [
     Image.load(base_path + "\\Frightened\\Frightened_4.png")
 ]
 
-Eaten_Image = Image.load(base_path + "\\Eaten\\eaten.png")
+Eaten_Image = [Image.load(base_path + "\\Eaten\\eaten.png")]

@@ -26,5 +26,27 @@ class Vector2(Vector3):
         y = self.getY() + vector.getY()
         return Vector2(x, y)
 
+    def differnece(self, vector):
+        if not isinstance(vector, Vector3):
+            return
+        x = self.getX() - vector.getX()
+        y = self.getY() - vector.getY()
+        return Vector2(x, y)
+
+    def scale(self, scaler:int):
+        if not self.is_int(scaler):
+            return
+        x = self.getX() * scaler
+        y = self.getY() * scaler
+        return Vector2(x, y)
+
+    def quick_magnitude(self):
+        """
+        Gives magnitude prior to sqrt. For compairing two vectors not for normalization
+        """
+        x = self.getX()
+        y = self.getY()
+        return ((x*x) + (y*y))
+
     def print(self):
         print(f"X: {self.x}, Y: {self.y}")

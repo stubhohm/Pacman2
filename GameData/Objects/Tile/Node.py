@@ -7,6 +7,7 @@ class Node(Path):
         self._directional_nodes = {}
         for direction in directions:
             self.set_directional_nodes(direction, None)
+        self.type = "Node"
    
     def set_directional_nodes(self, direction:str, node_position:Vector2):
         if direction not in directions:

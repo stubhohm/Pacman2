@@ -50,5 +50,30 @@ class Vector3():
         z = self.getZ() + vector.getZ()
         return Vector3(x, y, z)
 
+    def differnece(self, vector):
+        if not isinstance(vector, Vector3):
+            return
+        x = self.getX() - vector.getX()
+        y = self.getY() - vector.getY()
+        z = self.getZ() - vector.getZ()
+        return Vector3(x, y, z)
+
+    def scale(self, scaler:int):
+        if not self.is_int(scaler):
+            return
+        x = self.getX() * scaler
+        y = self.getY() * scaler
+        z = self.getZ() * scaler
+        return Vector3(x, y, z)
+
+    def quick_magnitude(self):
+        """
+        Gives magnitude prior to sqrt. For compairing two vectors not for normalization
+        """
+        x = self.getX()
+        y = self.getY()
+        z = self.getZ()
+        return ((x*x) + (y*y) + (z*z))
+    
     def print(self):
         print(f"X: {self._x}, Y: {self._y}, Z: {self._z}")

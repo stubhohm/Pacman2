@@ -10,6 +10,8 @@ class Wall(Tile):
         self.draw_function = None
         self.corner_coordinate:Vector2 = Vector2()
         self.orientation = None
+        self.type = "Wall"
+        self.line_color = BLUE
 
     def pair_matching(self, tile_1, tile_2):
         if type(tile_1) != type(tile_2): 
@@ -19,10 +21,10 @@ class Wall(Tile):
         return True
 
     def draw_arc(self, surface):
-        self.drawing.draw_arc(surface, self.start, self.end, self.corner_coordinate, BLUE, 5)
+        self.drawing.draw_arc(surface, self.start, self.end, self.corner_coordinate, self.line_color, 5)
 
     def draw_line(self, surface):
-        self.drawing.draw_line(surface, self.start, self.end, BLUE, 5)
+        self.drawing.draw_line(surface, self.start, self.end, self.line_color, 5)
 
     def draw(self, surface):
         if self.draw_function:
