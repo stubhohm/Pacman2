@@ -1,4 +1,6 @@
 from ..Vector2.Vector2 import Vector2
+from ...Keys.Constants import DEBUG
+from ...Keys.Colors import WHITE
 from ..Actor.Actor import Actor, directions, up, down, left, right, stop, velocity_to_direction, direction_to_velocity
 from ...Keys.Keys import direction_flips
 from ..Sprite.Sprite import EyeSprite, Surface
@@ -21,6 +23,7 @@ class Ghost(Actor):
         self.set_ghost_eyes()
         self.skipped_frames_per_second = 30
         self.in_node = False
+        self.color = WHITE
 
     def get_name(self):
         return self._name
@@ -86,19 +89,12 @@ class Ghost(Actor):
         refined_array = []
         shortest = None
         tgt_x, tgt_y = target_position.get_value()
+        self.set_target_position(target_position)
         for option in viable_options:
             x, y = direction_to_velocity.get(option)
             p_x, p_y = self.get_position().get_value()
             vec = Vector2((p_x + x - tgt_x), (p_y + y - tgt_y))
             magnitude = vec.quick_magnitude()
-            value = vec.get_value()
-            print(option)
-            print(x,y)
-            print(p_x, p_y)
-            print(tgt_x, tgt_y)
-            print(value)
-            print(magnitude)
-            print(shortest)
             if not shortest:
                 shortest = magnitude
             if magnitude == shortest:
@@ -154,6 +150,8 @@ class Ghost(Actor):
         self.move()
 
     def draw_sprite(self, surface):
+        if not DEBUG:
+            self.drawing.draw_line(surface, self.get_coordinate(), self.get_coordinate_from_position(self.get_target_position()), self.color, 3)
         if self._is_scared and not self._is_eaten:
             self.sprite.sprite_array = self.fightened_images
         elif self._is_eaten:

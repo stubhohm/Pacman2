@@ -5,6 +5,7 @@ from ...Keys.Constants import DEBUG, FPS
 from ...Keys.Keys import up, down, left, right, stop, directions
 from ...Keys.Constants import TILE_HEIGHT, TILE_WIDTH, ROWS, COLUMNS, WIDTH
 from ..Tile.TileTypes import Tile
+from ..Drawing.Drawing import Drawing
 
 direction_to_velocity = {
     up:(0,-1),
@@ -33,6 +34,7 @@ class Actor():
         self.actor_type = "Unassigned"
         self._map_grid = None
         self.skipped_frames_per_second = 20
+        self.drawing = Drawing()
         self.ticks = 0
 
     def is_coordinate(self, test_coordiante:Vector2):

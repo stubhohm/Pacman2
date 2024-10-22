@@ -1,4 +1,5 @@
 from ..Ghost import Ghost, Vector2, up, down, left, right, directions
+from ....Keys.Colors import RASPBERRY
 from ....Keys.Keys import pinky as new_name
 from ....Sprites.Sprite_Images import Pinky_Array
 
@@ -9,6 +10,7 @@ class Pinky(Ghost):
         self.ghost_images = Pinky_Array
         self.set_position(Vector2(12,4), True)
         self.set_retreat_position(Vector2(0,3))
+        self.color = RASPBERRY
     
     def chase_input_function(self, vector_1:Vector2, vector_2:Vector2):
         vector_2 = vector_2.scale(4)

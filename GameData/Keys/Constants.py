@@ -1,7 +1,7 @@
 start_height = 900
 start_width = 700
 
-DEBUG = True
+DEBUG = False
 
 PI = 3.1415
 
