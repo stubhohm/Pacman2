@@ -12,10 +12,13 @@ class Inky(Ghost):
         self.set_retreat_position(Vector2(ROWS, COLUMNS))
     
     def chase_input_function(self, vector_1:Vector2, vector_2:Vector2):
-        diff_vec = vector_1.differnece(vector_2)
-        target_position = vector_2.add(diff_vec)
-        diff_vec = self.get_position().differnece(vector_2)
-        target_position = vector_2.add(target_position).add(diff_vec)
+        # Get vector from blinky to pacman and double its length
+        diff_vec = vector_1.differnece(vector_2).scale(2)
+        target_position = vector_1.add(diff_vec)
+        print(vector_1.get_value())
+        print(diff_vec.get_value())
+        print(target_position.get_value())
+
         self.move_ghost(target_position)
 
     def move_ghost(self, pacman_position):
