@@ -60,6 +60,6 @@ class Game():
             if ghost.get_is_scared():
                 before_score = pacman.score
                 pacman.eat_object(ghost.eat_ghost())
-                if pacman.score - before_score > 10:
+                if pacman.score - before_score > 100:
                     print(pacman.score-before_score)
             
