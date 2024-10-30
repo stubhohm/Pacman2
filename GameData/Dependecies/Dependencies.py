@@ -1,5 +1,7 @@
 import pygame
 import os
+import time
+import math
 
 Sprite = pygame.sprite.Sprite
 Surface = pygame.Surface

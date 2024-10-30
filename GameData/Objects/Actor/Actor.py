@@ -39,15 +39,11 @@ class Actor():
 
     def is_coordinate(self, test_coordiante:Vector2):
         if type(test_coordiante) != Vector2:
-            print('not a vector')
-            print(test_coordiante)
             return False
         return True
 
     def is_bool(self, test_state):
         if type(test_state) != bool:
-            print(test_state)
-            print("Not Bool")
             return False
         return True
 
@@ -144,15 +140,15 @@ class Actor():
         # new instance vector for vel before validation process
         initial_vel = Vector2(int(self.get_velocity().getX()), int(self.get_velocity().getY()))
         
-        # Centering Check for if desired and current vels are different
-        if self._velocity.get_value() != self._desired_velocity.get_value():
-            if self.is_centered():
+        # Checks if desired and current vels are different, then sees if the wall is passable.
+        if self.get_velocity() != self.get_desired_velocity():
+            target_tile = self.get_target_tile(self.get_desired_velocity().scale(2))
+            if self.is_centered() and target_tile.is_passable():
                 x, y = self._desired_velocity.get_value()
                 self._velocity.set_value(x,y)
         
-        target_tile = self.get_target_tile(self._velocity)
+        target_tile = self.get_target_tile(self.get_velocity())
         if not target_tile:
-            print("no tile, stopped")
             x, y = direction_to_velocity[stop]
             self._velocity.set_value(x,y)
             self._desired_velocity.set_value(x,y)
@@ -162,7 +158,7 @@ class Actor():
         if self.check_wall_collision(target_tile):
             self._velocity = initial_vel
 
-        target_tile = self.get_target_tile(self._velocity)
+        target_tile = self.get_target_tile(self.get_velocity())
         if self.check_wall_collision(target_tile):
             x , y = direction_to_velocity.get(stop)
             self._velocity.set_value(x,y)

@@ -15,10 +15,6 @@ class Inky(Ghost):
         # Get vector from blinky to pacman and double its length
         diff_vec = vector_1.differnece(vector_2).scale(2)
         target_position = vector_1.add(diff_vec)
-        print(vector_1.get_value())
-        print(diff_vec.get_value())
-        print(target_position.get_value())
-
         self.move_ghost(target_position)
 
     def move_ghost(self, pacman_position):

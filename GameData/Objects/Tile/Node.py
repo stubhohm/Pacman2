@@ -24,4 +24,4 @@ class Node(Path):
         x = self.width * self.get_position().getX() + (self.width >> 1)
         y = self.height * self.get_position().getY() + (self.height >> 1)
         coordinate = Vector2(x, y)
-        self.drawing.draw_circle(surface, 6, coordinate)
+        #self.drawing.draw_circle(surface, 6, coordinate)

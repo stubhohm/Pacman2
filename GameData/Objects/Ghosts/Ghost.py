@@ -2,7 +2,7 @@ from ..Vector2.Vector2 import Vector2
 from ...Keys.Constants import DEBUG
 from ...Keys.Colors import WHITE
 from ..Actor.Actor import Actor, directions, up, down, left, right, stop, velocity_to_direction, direction_to_velocity
-from ...Keys.Keys import direction_flips
+from ...Keys.Keys import direction_flips, point_value, is_ghost
 from ..Sprite.Sprite import EyeSprite, Surface
 from ...Sprites.Sprite_Images import Eaten_Image, Ghost_eyes, Frightend_Array
 
@@ -85,6 +85,13 @@ class Ghost(Actor):
             list[i], list[j] = list[j], list[i]
         return list
 
+    def eat_ghost(self):
+        if self._is_scared and not self._is_eaten:
+            self.set_is_eaten(True)
+            return {point_value : 100 ,
+                    is_ghost : True}
+        return None
+
     def find_best_option(self, target_position:Vector2, viable_options:list[str]):
         refined_array = []
         shortest = None
@@ -103,14 +110,12 @@ class Ghost(Actor):
                 refined_array = [option]
         if len(refined_array) > 1:
             refined_array = self.shuffle_list(refined_array)
-        print(refined_array)
         return refined_array[0]
 
     def get_viable_options(self):
         options = list(directions)
         # Remove stop option and the flip option
         options.remove(stop)
-        print(options)
         if direction_flips.get(self.last_direction) in options:
             options.remove(direction_flips.get(self.last_direction))
         refined_options = list(options)
@@ -133,24 +138,17 @@ class Ghost(Actor):
             self.in_node = False
         if current_tile.type == "Node" and self.is_centered(True) and not self.in_node:
             self.in_node = True
-            print("\n+++ START DIR +++")
-            print(self.last_direction)
             self.in_node = True
             viable_options = self.get_viable_options()
-            print(viable_options)
             best_direction = self.find_best_option(pacman_position, viable_options)
-            print(best_direction)
             best_available = self.select_direction(best_direction)
-            print(best_available)
             if best_available != stop:
                 self.set_last_direction(best_available)
-            print(self.last_direction)
-            print("+++ END DIR +++\n")
         self.set_velocity(self.last_direction)
         self.move()
 
     def draw_sprite(self, surface):
-        if not DEBUG:
+        if DEBUG:
             self.drawing.draw_line(surface, self.get_coordinate(), self.get_coordinate_from_position(self.get_target_position()), self.color, 3)
         if self._is_scared and not self._is_eaten:
             self.sprite.sprite_array = self.fightened_images

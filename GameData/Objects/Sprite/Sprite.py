@@ -45,6 +45,7 @@ class Sprite():
         if not self.sprite_array:
             self.sprite = None
             return
+        self.frame = self.frame % len(self.sprite_array)
         self.sprite = self.sprite_array[self.frame]
 
 class EyeSprite(Sprite):

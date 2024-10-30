@@ -49,7 +49,7 @@ class Dot():
 
     def eat(self):
         if self._is_eaten:
-            return 0
+            return None
         self.set_is_eaten(True)
         contents = {point_value: self._point_value,
                     is_power_up: self._is_powerup}

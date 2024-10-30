@@ -12,10 +12,8 @@ class Pinky(Ghost):
         self.set_retreat_position(Vector2(0,3))
         self.color = RASPBERRY
     
-    def chase_input_function(self, vector_1:Vector2, vector_2:Vector2):
-        vector_2 = vector_2.scale(4)
-        target_position = vector_1.add(vector_2)
-        self.move_ghost(target_position)
+    def chase_input_function(self, vector_1:Vector2):
+        self.move_ghost(vector_1)
 
     def move_ghost(self, pacman_position):
         super().move_ghost(pacman_position)

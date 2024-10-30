@@ -1,4 +1,4 @@
-from ..Tile.TileTypes import Tile, Wall
+from ..Tile.TileTypes import Tile, Wall, Path
 from ...Keys.Colors import ColorMixer, WHITE, RED
 from ...Keys.Constants import DEBUG, ROWS, COLUMNS, HEIGHT, WIDTH, TILE_HEIGHT, TILE_WIDTH
 from ...Keys.Keys import ghost_names, blinky, clyde, inky, pinky
@@ -59,21 +59,50 @@ class Map():
     def get_grid(self):
         return self._grid
 
+    def get_ghosts(self):
+        return self._ghosts
+
+    def get_tile(self, position:Vector2):
+        x, y = position.get_value()
+        if WIDTH < x: x = WIDTH
+        if x < 0: x = 0
+        if y < 0: y = 0
+        if HEIGHT < y: y = HEIGHT
+
+        tile = self.get_grid()[y][x]
+        return tile
+
     def get_player_position(self):
         return self._pacman.get_position()
 
+    def get_player(self):
+        return self._pacman
+
     def move_player(self, player_input):
-        self._pacman.handle_input(player_input)
+        pacman = self.get_player()
+        power_up_start = pacman.power_up
+        pacman.handle_input(player_input)
+        tile = self.get_tile(self.get_player_position())
+        if not isinstance(tile, Path):
+            return 
+        if dot :=tile.get_dot():
+            self.get_player().eat_object(dot.eat())
+        if power_up_start != pacman.power_up:
+            self.set_ghost_fear_state(pacman.power_up)
+        
+    def set_ghost_fear_state(self, state:bool):
+        for ghost in self._ghosts.values():
+            ghost.set_is_scared(state)
 
     def move_ghosts(self):
-        pacman_pos = self._pacman.get_position()
+        pacman_pos = self.get_player_position()
         pacman_vel = self._pacman.get_velocity()
         for ghost_name in self._ghosts.keys():
             ghost = self._ghosts.get(ghost_name)
             if ghost_name == pinky:
-                ghost.chase_input_function(pacman_pos, pacman_vel)
+                ghost.chase_input_function(pacman_pos.add(pacman_vel.scale(4)))
             elif ghost_name == inky:
-                pacman_space_two_forward = pacman_vel.scale(2)
+                pacman_space_two_forward = pacman_pos.add(pacman_vel.scale(2))
                 blinky_space = self._ghosts[blinky].get_position()
                 ghost.chase_input_function(pacman_space_two_forward, blinky_space)
             else:

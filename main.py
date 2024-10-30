@@ -18,6 +18,7 @@ def main():
             continue
         game.map.move_player(input)
         game.map.move_ghosts()
+        game.check_interactions()
         game.draw_map()
         game.window.update_display()
 
