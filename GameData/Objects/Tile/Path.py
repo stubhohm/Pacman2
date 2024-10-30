@@ -1,7 +1,7 @@
 from .Tile import Tile
 from ..Dot.PowerUp import Dot, PowerUp
 from ..Vector2.Vector2 import Vector2
-from ...Keys.Colors import SPRING_GREEN
+from ...Keys.Colors import WHITE
 
 class Path(Tile):
     def __init__(self):
@@ -30,8 +30,7 @@ class Path(Tile):
     def draw(self, surface):
         dot = self.get_dot()
         if dot:
-            if not dot.get_is_eaten():
-                radius = (self.height + self.width) >> 4
-                if dot.get_is_powerup():
-                    radius = (radius << 1) + radius
-                self.drawing.draw_circle(surface, radius, self.dot_coordinate, SPRING_GREEN)
+            radius = (self.height + self.width) >> 4
+            if dot.get_is_powerup():
+                radius = (radius << 1) + radius
+            self.drawing.draw_circle(surface, radius, self.dot_coordinate, WHITE)
