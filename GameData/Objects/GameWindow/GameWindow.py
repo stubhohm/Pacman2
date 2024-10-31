@@ -4,6 +4,7 @@ from ...Keys.Colors import ColorMixer, MAGENTA, OCEAN, WHITE, CYAN, ORANGE, RASP
 from ..Drawing.Drawing import Drawing, Vector2, Vector3
 from ..Tile.Tile import Tile
 
+
 class GameWindow():
     def __init__(self):
         self.height = HEIGHT
@@ -49,6 +50,7 @@ class GameWindow():
         for y_row in tiles:
             for tile in y_row:
                 tile.draw(self.draw_window)
+
 
     def update_display(self):
         self.display.update()

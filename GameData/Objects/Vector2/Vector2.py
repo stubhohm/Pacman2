@@ -20,7 +20,7 @@ class Vector2(Vector3):
         return (x, y)
 
     def add(self, vector):
-        if not isinstance(vector, Vector2):
+        if not isinstance(vector, Vector3):
             return
         x = self.getX() + vector.getX()
         y = self.getY() + vector.getY()

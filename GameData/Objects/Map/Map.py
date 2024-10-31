@@ -64,12 +64,15 @@ class Map():
 
     def get_tile(self, position:Vector2):
         x, y = position.get_value()
-        if WIDTH < x: x = WIDTH
+        if COLUMNS <= x: x = COLUMNS -1
         if x < 0: x = 0
         if y < 0: y = 0
-        if HEIGHT < y: y = HEIGHT
-
-        tile = self.get_grid()[y][x]
+        if ROWS <= y: y = ROWS - 1
+        try:
+            tile = self.get_grid()[y][x]
+        except IndexError:
+            print(x)
+            print(len(self.get_grid()[0]))
         return tile
 
     def get_player_position(self):
@@ -85,8 +88,8 @@ class Map():
         tile = self.get_tile(self.get_player_position())
         if not isinstance(tile, Path):
             return 
-        if dot :=tile.get_dot():
-            self.get_player().eat_object(dot.eat())
+        if tile.get_dot():
+            self.get_player().eat_object(tile.eat_dot())
         if power_up_start != pacman.power_up:
             self.set_ghost_fear_state(pacman.power_up)
         

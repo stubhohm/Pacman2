@@ -18,6 +18,13 @@ class Path(Tile):
             return
         self._dot = new_dot
 
+    def eat_dot(self):
+        if not self._dot:
+            return None
+        dot_dict = self._dot.eat()
+        self._dot = None
+        return dot_dict
+
     def get_dot(self):
         return self._dot
 

@@ -34,5 +34,6 @@ class Text():
         self.set_color(color)
         self.size = size
 
-    def render_font(self):
-        self.font.render(self.string, False, self.color)
+    def render_font(self, surface:pygame.surface.Surface):
+        text_surface = self.font.render(self.string, False, self.color.get_value())
+        surface.blit(text_surface, self.position.get_value())
