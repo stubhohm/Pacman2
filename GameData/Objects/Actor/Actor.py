@@ -1,6 +1,5 @@
 from ..Vector2.Vector2 import Vector2
 from ..Sprite.Sprite import Sprite
-from ...Keys.Colors import RED
 from ...Keys.Constants import DEBUG, FPS
 from ...Keys.Keys import up, down, left, right, stop, directions
 from ...Keys.Constants import TILE_HEIGHT, TILE_WIDTH, ROWS, COLUMNS, WIDTH
@@ -33,7 +32,7 @@ class Actor():
         self.sprite:Sprite = Sprite()
         self.actor_type = "Unassigned"
         self._map_grid = None
-        self.skipped_frames_per_second = 20
+        self.skipped_frames_per_second = 0
         self.drawing = Drawing()
         self.ticks = 0
 
@@ -164,7 +163,6 @@ class Actor():
             self._velocity.set_value(x,y)
             self._desired_velocity.set_value(x,y)
             self.set_position(self.get_position(), True)
-            target_tile.line_color = RED
         
     def get_velocity(self):
         return self._velocity

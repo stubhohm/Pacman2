@@ -48,7 +48,12 @@ class Game():
             if name == 'return':
                 name = select
             return name
-        
+
+    def draw(self):
+        self.draw_map()
+        self.window.update_display()
+        self.clock.tick(FPS)
+
     def draw_map(self):
         self.loop_count += 1
         self.tile_timer = start_time(self.tile_timer)

@@ -25,20 +25,7 @@ def main():
         game.map.move_player(input)
         game.map.move_ghosts()
         game.check_interactions()
-        map_draw_timer = start_time(map_draw_timer)
-        game.draw_map()
-        map_draw_timer = sum_time(map_draw_timer)
-        update_timer = start_time(update_timer)
-        game.window.update_display()
-        update_timer = sum_time(update_timer)
-        
-        loop_count += 1
-        if loop_count % 240 == 0:
-            loop_count = 1
-            total_run_timer = sum_time(total_run_timer)
-            print()
-            total_run_timer = end_time(total_run_timer)
-            map_draw_timer = end_time(map_draw_timer)
-            update_timer = end_time(update_timer)
+        game.draw()
 
+        
 main()

@@ -66,6 +66,8 @@ class Ghost(Actor):
         if not self.is_bool(new_state):
             return
         self._is_scared = new_state
+        if self._is_scared:
+            self.sprite.frame = 0
 
     def set_last_direction(self, direction):
         self._ghost_eye_sprite.last_direction = direction
@@ -93,6 +95,8 @@ class Ghost(Actor):
         return None
 
     def find_best_option(self, target_position:Vector2, viable_options:list[str]):
+        if self._is_eaten:
+            target_position = Vector2(14,14)
         refined_array = []
         shortest = None
         tgt_x, tgt_y = target_position.get_value()
@@ -116,6 +120,9 @@ class Ghost(Actor):
         options = list(directions)
         # Remove stop option and the flip option
         options.remove(stop)
+        tile = self.get_target_tile(Vector2())
+        if tile.limited:
+            options.remove(up)
         if direction_flips.get(self.last_direction) in options:
             options.remove(direction_flips.get(self.last_direction))
         refined_options = list(options)
@@ -132,20 +139,21 @@ class Ghost(Actor):
     def select_direction(self, best_direction:str):
         return best_direction
  
-    def move_ghost(self, pacman_position:Vector2):
+    def move_ghost(self, target_position:Vector2):
         current_tile = self.get_target_tile(Vector2())
-        if current_tile.type != "Node":
+        if "Node" not in current_tile.type:
             self.in_node = False
-        if current_tile.type == "Node" and self.is_centered(True) and not self.in_node:
-            self.in_node = True
+        if "Node" in current_tile.type and self.is_centered(True) and not self.in_node:
             self.in_node = True
             viable_options = self.get_viable_options()
-            best_direction = self.find_best_option(pacman_position, viable_options)
+            best_direction = self.find_best_option(target_position, viable_options)
             best_available = self.select_direction(best_direction)
             if best_available != stop:
                 self.set_last_direction(best_available)
         self.set_velocity(self.last_direction)
         self.move()
+        if self.get_position().get_value() == Vector2(14,14).get_value():
+            self.set_is_eaten(False)
 
     def draw_sprite(self, surface):
         if DEBUG:
