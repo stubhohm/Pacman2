@@ -5,6 +5,7 @@ from ..Text.Text import Text
 from ..Tile.TileTypes import Wall, Node, Path
 from ...Keys.Keys import quit_game, select
 from ...Keys.Constants import FPS
+from ...Dependecies.Dependencies import make_timer, start_time, sum_time, end_time
 
 class Game():
     def __init__(self):
@@ -12,6 +13,8 @@ class Game():
         self.init_game_window()
         self.init_tiles()
         self.init_fonts()
+        self.tile_timer = make_timer("Tile Timer")
+        self.loop_count = 0
 
     def init_fonts(self):
         self.large_font = Text()
@@ -47,8 +50,15 @@ class Game():
             return name
         
     def draw_map(self):
+        self.loop_count += 1
+        self.tile_timer = start_time(self.tile_timer)
         self.window.draw_tiles(self.map.get_grid())
+        self.tile_timer = sum_time(self.tile_timer)
         self.map.draw(self.window.draw_window)
+        if self.loop_count % 240 == 0:
+            self.loop_count = 1
+            print()
+            self.tile_timer = end_time(self.tile_timer)
 
     def check_interactions(self):
         pacman = self.map.get_player()

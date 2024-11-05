@@ -3,6 +3,8 @@ from ...Dependecies.Dependencies import pygame
 from ...Keys.Colors import ColorMixer, MAGENTA, OCEAN, WHITE, CYAN, ORANGE, RASPBERRY, RED, BLACK
 from ..Drawing.Drawing import Drawing, Vector2, Vector3
 from ..Tile.Tile import Tile
+from ...Dependecies.Dependencies import make_timer, start_time, sum_time, end_time
+
 
 class GameWindow():
     def __init__(self):

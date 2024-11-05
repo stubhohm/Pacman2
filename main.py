@@ -1,35 +1,12 @@
 from GameData.Keys.Keys import quit_game
 from GameData.Constructor.Constructor import init
-from GameData.Dependecies.Dependencies import time
+from GameData.Dependecies.Dependencies import time, start_time, make_timer, sum_time, end_time
 
-def make_timer(name:str):
-    timer = {"name": name,
-             "start" : 0,
-             "total" : 0}
-    return timer
-
-def start_time(timer:dict):
-    start = time.time()
-    timer["start"] = start
-    return timer
-
-def sum_time(segment:dict):
-    new_total = time.time() - segment.get("start")
-    segment["total"] += new_total
-    return segment
-
-def end_time(segment:dict):
-    print(f"{segment.get("name")} took {segment.get("total")} seconds")
-    segment["total"] = 0
-    return segment
 
 def main():
     game = init()
     playing = True
     pause = False
-    player_timer = make_timer("Player timer")
-    ghost_timer = make_timer("Ghost timer")
-    collision_timer = make_timer("Collision timer")
     map_draw_timer = make_timer("Make Map timer")
     update_timer = make_timer("Update timer")
     total_run_timer = make_timer("Total run timer")
