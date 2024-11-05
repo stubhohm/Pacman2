@@ -118,6 +118,9 @@ class Ghost(Actor):
         options = list(directions)
         # Remove stop option and the flip option
         options.remove(stop)
+        tile = self.get_target_tile(Vector2())
+        if tile.limited:
+            options.remove(up)
         if direction_flips.get(self.last_direction) in options:
             options.remove(direction_flips.get(self.last_direction))
         refined_options = list(options)
@@ -136,10 +139,9 @@ class Ghost(Actor):
  
     def move_ghost(self, target_position:Vector2):
         current_tile = self.get_target_tile(Vector2())
-        if current_tile.type != "Node":
+        if "Node" not in current_tile.type:
             self.in_node = False
-        if current_tile.type == "Node" and self.is_centered(True) and not self.in_node:
-            self.in_node = True
+        if "Node" in current_tile.type and self.is_centered(True) and not self.in_node:
             self.in_node = True
             viable_options = self.get_viable_options()
             best_direction = self.find_best_option(target_position, viable_options)

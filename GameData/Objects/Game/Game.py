@@ -45,7 +45,12 @@ class Game():
             if name == 'return':
                 name = select
             return name
-        
+
+    def draw(self):
+        self.draw_map()
+        self.window.update_display()
+        self.clock.tick(FPS)
+
     def draw_map(self):
         self.window.draw_tiles(self.map.get_grid())
         self.map.draw(self.window.draw_window)

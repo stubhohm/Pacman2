@@ -1,6 +1,7 @@
 from ..Actor.Actor import Actor, Vector2
 from ...Keys.Keys import up, down, left, right, stop, directions
 from ...Keys.Keys import point_value, is_power_up, is_ghost
+from ...Keys.Constants import TILE_HEIGHT, TILE_WIDTH
 from ...Sprites.Sprite_Images import Pacman_Arrary
 from ...Dependecies.Dependencies import time
 from ..Text.PointText import BonusPointText
@@ -44,7 +45,7 @@ class Pacman(Actor):
             self.eaten_ghosts += 1
             object_dict[point_value] = object_dict.get(point_value) * (2**self.eaten_ghosts)
             text = BonusPointText()
-            text.define_font(object_dict.get(point_value), self.get_coordinate())
+            text.define_font(str(object_dict.get(point_value)), self.get_coordinate().add(Vector2(-TILE_WIDTH, -TILE_HEIGHT)))
             self.text_instances.append(text)
         if points :=object_dict.get(point_value):
             self.score += points
@@ -56,13 +57,15 @@ class Pacman(Actor):
         for text in list(self.text_instances):
             if not text:
                 self.text_instances.remove(text)
-            text.move_text()
+                continue
+            if not text.move_text():
+                self.text_instances.remove(text)
 
     def draw_sprite(self, surface):
-        for text in self.text_instances:
-            self.update_bonuspoint_text()
-            text.render_font(surface)
         super().draw_sprite(surface)
+        self.update_bonuspoint_text()
+        for text in list(self.text_instances):
+            text.draw_font(surface)
 
     def print(self):
         print(self.get_direction())

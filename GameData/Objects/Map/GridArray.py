@@ -36,6 +36,17 @@ def make_path():
 def make_tile():
     return Tile()
 
+def make_limited_node():
+    node = make_node()
+    node.limited = True
+    return node
+
+def make_limited_dot_node():
+    node = make_limited_node()
+    node.add_dot(Dot())
+    node.limited = True
+    return node
+
 empty_row = []
 wall_row_top = []
 wall_row_bottom = []
@@ -47,7 +58,7 @@ for i in range(COLUMNS):
     wall_row_bottom.append(make_wall())
 
 
-def construct_row(dot_nodes:tuple = (), walls:tuple = (), power_ups:tuple= (), empty_tiles:tuple = (), empty_nodes:tuple = (), power_up_nodes:tuple = ()):
+def construct_row(dot_nodes:tuple = (), walls:tuple = (), power_ups:tuple= (), empty_tiles:tuple = (), empty_nodes:tuple = (), power_up_nodes:tuple = (), limited_nodes:tuple = (), limited_dot_nodes:tuple = ()):
     row = []
     for i in range(COLUMNS):
         if i in dot_nodes:
@@ -62,6 +73,10 @@ def construct_row(dot_nodes:tuple = (), walls:tuple = (), power_ups:tuple= (), e
             row.append(make_node())
         elif i in power_up_nodes:
             row.append(make_powerup_node())
+        elif i in limited_nodes:
+            row.append(make_limited_node())
+        elif i in limited_dot_nodes:
+            row.append(make_limited_dot_node())
         else:
             if i in (0, 27):
                 row.append(make_wall())
@@ -125,16 +140,17 @@ row_10 = construct_row(dot_nodes, walls, power_ups)
 
 # row 11
 dot_nodes = ()
-empty_nodes = (9, 12, 15, 18)
+empty_nodes = (9, 18)
 walls = (0, 1, 2, 3, 4, 5, 7, 8, 19, 20, 22, 23, 24, 25, 26, 27)
 power_ups = ()
 empty_tiles = ( 10, 11, 13, 14, 16, 17)
-row_11 = construct_row(dot_nodes, walls, power_ups, empty_tiles, empty_nodes)
+limited_nodes = (12, 15)
+row_11 = construct_row(dot_nodes, walls, power_ups, empty_tiles, empty_nodes, limited_nodes=limited_nodes)
 
 # row 12
 dot_nodes = ()
 empty_nodes = ()
-walls = (0, 1, 2, 3, 4,5, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 22, 23, 24, 25, 26, 27)
+walls = (0, 1, 2, 3, 4, 5, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 22, 23, 24, 25, 26, 27)
 power_ups = ()
 empty_tiles = (9, 18)
 row_12 = construct_row(dot_nodes, walls, power_ups, empty_tiles, empty_nodes)
@@ -147,7 +163,7 @@ dot_nodes = ()
 empty_nodes = ()
 walls = (0, 1, 2, 3, 4, 5, 7, 8, 10, 17, 19, 20, 22, 23, 24, 25, 26, 27)
 power_ups = ()
-empty_tiles = ( 9, 11, 12, 13, 14, 15, 16, 18, )
+empty_tiles = ( 9, 11, 12, 13, 14, 15, 16, 18)
 row_13 = construct_row(dot_nodes, walls, power_ups, empty_tiles, empty_nodes)
 row_15 = construct_row(dot_nodes, walls, power_ups, empty_tiles, empty_nodes)
 
@@ -157,7 +173,7 @@ dot_nodes = (6, 21)
 empty_nodes = (9, 18)
 walls = (10, 17)
 power_ups = ()
-empty_tiles = (0, 1, 2, 3, 4, 5, 7, 8, 11, 12, 13, 14, 15, 16, 19, 20, 22, 23, 24, 25, 26, 27)
+empty_tiles = (0, 1, 2, 3, 4, 5, 7, 8, 11, 12, 14, 13, 15, 16, 19, 20, 22, 23, 24, 25, 26, 27)
 row_14 = construct_row(dot_nodes, walls, power_ups, empty_tiles, empty_nodes)
 
 # Row 17
@@ -184,10 +200,11 @@ row_21 = construct_row(dot_nodes, walls)
 row_22 = construct_row(dot_nodes, walls)
 
 # row 23
-dot_nodes = (3, 6, 9, 12, 15,18, 21, 24)
+dot_nodes = (3, 6, 9, 18, 21, 24)
 power_ups_node = (1, 26)
 walls = (4 ,5, 22, 23)
-row_23 = construct_row(dot_nodes, walls, (), (), (), power_ups_node)
+limited_dot_nodes = (12, 15)
+row_23 = construct_row(dot_nodes, walls, (), (), (), power_ups_node, limited_dot_nodes=limited_dot_nodes)
 
 # Row 24, 25
 dot_nodes = ()
