@@ -66,6 +66,8 @@ class Ghost(Actor):
         if not self.is_bool(new_state):
             return
         self._is_scared = new_state
+        if self._is_scared:
+            self.sprite.frame = 0
 
     def set_last_direction(self, direction):
         self._ghost_eye_sprite.last_direction = direction
