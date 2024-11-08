@@ -67,3 +67,13 @@ class EyeSprite(Sprite):
 
     def draw(self, window, position):
         return super().draw(window, position, False)
+    
+class LivesSprite(Sprite):
+    def __init__(self):
+        super().__init__()
+
+    def incriment_sprite(self):
+        pass
+
+    def draw(self, window, position):
+        return super().draw(window, position, False)
