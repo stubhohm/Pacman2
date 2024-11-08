@@ -22,8 +22,9 @@ class Sprite():
             return TILE_WIDTH
         return self.sprite.get_width()
 
-    def draw(self, window:Surface, position:Vector2):
-        self.incriment_sprite()
+    def draw(self, window:Surface, position:Vector2, incriment:bool):
+        if incriment:
+            self.incriment_sprite()
         self.set_frame()
         if not self.sprite and not type(self.sprite) == Surface:
             return
@@ -63,3 +64,6 @@ class EyeSprite(Sprite):
 
     def incriment_sprite(self):
         pass
+
+    def draw(self, window, position):
+        return super().draw(window, position, False)

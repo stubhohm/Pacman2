@@ -5,17 +5,22 @@ from ...Keys.Keys import ghost_names, blinky, clyde, inky, pinky
 from ..Ghosts.GhostList import Blinky, Clyde, Inky, Pinky, Ghost
 from ..Pacman.Pacman import Pacman
 from ..Vector2.Vector2 import Vector2
-from .GridArray import imported_grid_array
+from .GridArray import make_grid_array
 from ..Drawing.Drawing import Drawing
+from ..Fruit.Fruit import Fruit
+from ...Dependecies.Dependencies import copy
 
 class Map():
-    def __init__(self):
+    def __init__(self, level:int, fruit_dict:dict, pacman_dict = {}):
         self._grid = []
-        self.set_grid(imported_grid_array)
+        self.dots_eaten = 0
+        self.set_grid(make_grid_array())
         self.__define_ghosts()
-        self.__define_pacman()
+        self.__define_pacman(pacman_dict)
         self.drawing = Drawing()
         self.color_mixer = ColorMixer()
+        self.fruit_1 = Fruit(fruit_dict.get("Fruit 1"), True)
+        self.fruit_2 = Fruit(fruit_dict.get("Fruit 2"), False)
         
     def __define_ghosts(self):
         self._ghosts:dict[str, Ghost] = {}
@@ -26,8 +31,8 @@ class Map():
         for ghost_names in self._ghosts.keys():
             self._ghosts.get(ghost_names).set_map_grid(self.get_grid())
 
-    def __define_pacman(self):
-        self._pacman = Pacman()
+    def __define_pacman(self, pacman_dict:dict):
+        self._pacman = Pacman(pacman_dict)
         self._pacman.set_map_grid(self.get_grid())
 
     def __validate_grid(self, grid_array:list[list[Tile]]):
@@ -39,7 +44,7 @@ class Map():
                     return False
                 tile.set_position(Vector2(x,y))
                 if type(tile) == Wall:
-                    tile.define_wall_draw(grid_array)
+                    tile.define_wall_draw(grid_array, False)
         for column in grid_array:
             for tile in column:
                 if type(tile) == Wall:
@@ -51,6 +56,7 @@ class Map():
         if type(grid_array) != list:
             print("Not a list")
             return
+        print(copy.__doc__)
         if not self.__validate_grid(grid_array):
             print('Failed Array Check')
             return
@@ -85,31 +91,44 @@ class Map():
         pacman = self.get_player()
         power_up_start = pacman.power_up
         pacman.handle_input(player_input)
+        self.update_fruit()
         tile = self.get_tile(self.get_player_position())
         if not isinstance(tile, Path):
             return 
         if tile.get_dot():
             self.get_player().eat_object(tile.eat_dot())
+            self.dots_eaten += 1
+            print(self.dots_eaten)
         if power_up_start != pacman.power_up:
             self.set_ghost_fear_state(pacman.power_up)
-        
+            
     def set_ghost_fear_state(self, state:bool):
         for ghost in self._ghosts.values():
             ghost.set_is_scared(state)
 
     def move_ghosts(self):
         pacman_pos = self.get_player_position()
-        pacman_vel = self._pacman.get_velocity()
-        for ghost_name in self._ghosts.keys():
-            ghost = self._ghosts.get(ghost_name)
+        pacman_vel = self.get_player().get_velocity()
+        ghosts = self.get_ghosts()
+        for ghost_name in ghosts.keys():
+            ghost = ghosts.get(ghost_name)
             if ghost_name == pinky:
                 ghost.chase_input_function(pacman_pos.add(pacman_vel.scale(4)))
             elif ghost_name == inky:
                 pacman_space_two_forward = pacman_pos.add(pacman_vel.scale(2))
-                blinky_space = self._ghosts[blinky].get_position()
+                blinky_space = ghosts.get(blinky).get_position()
                 ghost.chase_input_function(pacman_space_two_forward, blinky_space)
             else:
                 ghost.chase_input_function(pacman_pos)
+
+    def update_fruit(self):
+        self.fruit_1.update_visibility(self.dots_eaten, False)
+        self.fruit_2.update_visibility(self.dots_eaten, self.fruit_1.is_visible)
+        fruit_x, fruit_y = self.fruit_1.get_coordinate().get_value()
+        player_x , player_y = self.get_player().get_coordinate().get_value()
+        if player_y + 2 > fruit_y > player_y - 2 and (player_x + int(TILE_WIDTH / 2) > fruit_x > player_x - int(TILE_WIDTH / 2)):
+            self.get_player().eat_object(self.fruit_1.eat_fruit())
+            self.get_player().eat_object(self.fruit_2.eat_fruit())
 
     def draw_grid(self, surface):
         if not DEBUG:
@@ -131,8 +150,9 @@ class Map():
 
     def draw(self, surface):
         self.draw_grid(surface)
-        self._pacman.draw_sprite(surface)
-        self.drawing.draw_circle(surface, 2, position=self._pacman.get_coordinate(), color=RED)
-        for ghost_name in self._ghosts.keys():
-            ghost = self._ghosts[ghost_name] 
+        self.fruit_1.draw_sprite(surface)
+        self.fruit_2.draw_sprite(surface)
+        self.get_player().draw_sprite(surface)
+        for ghost_name in self.get_ghosts().keys():
+            ghost = self.get_ghosts().get(ghost_name) 
             ghost.draw_sprite(surface)

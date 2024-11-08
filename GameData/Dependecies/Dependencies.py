@@ -2,6 +2,7 @@ import pygame
 import os
 import time
 import math
+import copy
 
 Sprite = pygame.sprite.Sprite
 Surface = pygame.Surface

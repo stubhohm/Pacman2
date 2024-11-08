@@ -1,5 +1,6 @@
 from ..Dependecies.Dependencies import Image, Transform, os
 from ..Keys.Keys import up, down, left, right
+from ..Keys.Keys import Apple, Bell, Cherry, Galaxian, Key, Melon, Orange, Strawberry 
 
 base_path = os.path.join("GameData", "Sprites")
 
@@ -16,8 +17,35 @@ Pacman_Arrary = [
 
 new_list = []
 for image in Pacman_Arrary:
-    new_list.append(Transform.scale_by(image, 1.7))
+    new_list.append(Transform.scale_by(image, 2))
 Pacman_Arrary = new_list
+
+Pacman_Image_dict:dict[str, list] = {}
+for direction in [left, right, up, down]:
+    if direction == left:
+        left_images = []
+        for image in list(Pacman_Arrary):
+            img_copy = image.copy()
+            left_images.append(Transform.flip(img_copy, True, False))
+        Pacman_Image_dict[left] = left_images
+    if direction == right:
+        right_images = []
+        for image in list(Pacman_Arrary):
+            right_images.append(image.copy())
+        Pacman_Image_dict[right] = right_images
+    if direction == up:
+        up_images = []
+        for image in list(Pacman_Arrary):
+            img_copy = image.copy()
+            up_images.append(Transform.rotate(img_copy, 90))
+        Pacman_Image_dict[up] = up_images
+    if direction == down:
+        down_images = []
+        for image in list(Pacman_Arrary):
+            img_copy = image.copy()
+            down_images.append(Transform.rotate(img_copy, -90))
+        Pacman_Image_dict[down] = down_images
+            
 
 Ghost_eyes = { 
     up: Image.load(os.path.join(base_path, "Eyes", "eyes_up.png")),
@@ -89,3 +117,18 @@ new_list = []
 for image in Eaten_Image:
     new_list.append(Transform.scale_by(image, 1.7))
 Eaten_Image = new_list
+
+Fruit_Images = {Apple : Image.load(os.path.join(base_path, "Fruit", "Apple.png")), 
+                Bell : Image.load(os.path.join(base_path, "Fruit", "Bell.png")), 
+                Cherry : Image.load(os.path.join(base_path, "Fruit", "Cherry.png")), 
+                Galaxian : Image.load(os.path.join(base_path, "Fruit", "Galaxian.png")), 
+                Key : Image.load(os.path.join(base_path, "Fruit", "Key.png")),
+                Melon : Image.load(os.path.join(base_path, "Fruit", "Melon.png")),
+                Orange : Image.load(os.path.join(base_path, "Fruit", "Orange.png")),
+                Strawberry : Image.load(os.path.join(base_path, "Fruit", "Strawberry.png")),}
+
+new_dict[str, Image] = {}
+for key in Fruit_Images.keys():
+    image = Fruit_Images.get(key)
+    new_dict[key] = (Transform.scale_by(image, 2))
+Fruit_Images = new_dict

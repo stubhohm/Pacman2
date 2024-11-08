@@ -7,10 +7,6 @@ def main():
     game = init()
     playing = True
     pause = False
-    map_draw_timer = make_timer("Make Map timer")
-    update_timer = make_timer("Update timer")
-    total_run_timer = make_timer("Total run timer")
-    loop_count = 0
     while playing:
         input = game.user_input()
         if input:

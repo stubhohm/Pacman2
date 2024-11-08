@@ -1,7 +1,7 @@
 from ..Vector2.Vector2 import Vector2
 from ...Keys.Constants import DEBUG
 from ...Keys.Colors import WHITE
-from ..Actor.Actor import Actor, directions, up, down, left, right, stop, velocity_to_direction, direction_to_velocity
+from ..Actor.Actor import Actor, directions, up, down, left, right, stop
 from ...Keys.Keys import direction_flips, point_value, is_ghost
 from ..Sprite.Sprite import EyeSprite, Surface
 from ...Sprites.Sprite_Images import Eaten_Image, Ghost_eyes, Frightend_Array
@@ -61,13 +61,19 @@ class Ghost(Actor):
         self._is_eaten = new_state
         if self._is_eaten:
             self.set_is_scared(False)
+            self.skipped_frames_per_second = 0
 
     def set_is_scared(self, new_state:bool):
         if not self.is_bool(new_state):
             return
+        if self._is_eaten:
+            return
         self._is_scared = new_state
         if self._is_scared:
+            self.skipped_frames_per_second = 60
             self.sprite.frame = 0
+        else:
+            self.skipped_frames_per_second = 30
 
     def set_last_direction(self, direction):
         self._ghost_eye_sprite.last_direction = direction
@@ -97,12 +103,13 @@ class Ghost(Actor):
     def find_best_option(self, target_position:Vector2, viable_options:list[str]):
         if self._is_eaten:
             target_position = Vector2(14,14)
+
         refined_array = []
         shortest = None
         tgt_x, tgt_y = target_position.get_value()
         self.set_target_position(target_position)
         for option in viable_options:
-            x, y = direction_to_velocity.get(option)
+            x, y = self.direction_to_velocity.get(option)
             p_x, p_y = self.get_position().get_value()
             vec = Vector2((p_x + x - tgt_x), (p_y + y - tgt_y))
             magnitude = vec.quick_magnitude()
@@ -127,7 +134,7 @@ class Ghost(Actor):
             options.remove(direction_flips.get(self.last_direction))
         refined_options = list(options)
         for option in options:
-            x , y = direction_to_velocity.get(option)
+            x , y = self.direction_to_velocity.get(option)
             vec = Vector2(2 * x, 2 * y)
             tile = self.get_target_tile(vec)
             if tile and tile.is_passable():
@@ -152,18 +159,23 @@ class Ghost(Actor):
                 self.set_last_direction(best_available)
         self.set_velocity(self.last_direction)
         self.move()
-        if self.get_position().get_value() == Vector2(14,14).get_value():
+        if self.get_position().get_value() == Vector2(14,14).get_value() and self.get_is_eaten():
             self.set_is_eaten(False)
+            self.set_is_scared(False)
 
     def draw_sprite(self, surface):
         if DEBUG:
             self.drawing.draw_line(surface, self.get_coordinate(), self.get_coordinate_from_position(self.get_target_position()), self.color, 3)
+        
+        self.sprite.sprite_array = self.ghost_images
+        
+        if self._is_eaten:
+            self.sprite.sprite_array = self.eaten_image
+
         if self._is_scared and not self._is_eaten:
             self.sprite.sprite_array = self.fightened_images
-        elif self._is_eaten:
-            self.sprite.sprite_array = self.eaten_image
-        else:
-            self.sprite.sprite_array = self.ghost_images
+
+            
         super().draw_sprite(surface)
-        if self._ghost_eye_sprite and not self._is_scared:
+        if self._ghost_eye_sprite and (not self._is_scared or self._is_eaten):
             self._ghost_eye_sprite.draw(surface, self.get_sprite_coordinate())

@@ -45,7 +45,6 @@ class Text():
             surface.blit(self.text_surface, position)
 
     def render_font(self):
-        print(self.string)
         self.text_surface = self.font.render(self.string, True, self.color.get_value())
 
 

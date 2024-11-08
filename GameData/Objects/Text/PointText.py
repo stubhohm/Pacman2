@@ -26,7 +26,6 @@ class BonusPointText(Text):
         self.ticks += 1
         x = self.position.getX()
         if self.ticks % 10 == 0:
-            print(self.ticks)
             x -= 1
             self.starting_point = self.starting_point.add(Vector2(0,-1))
 

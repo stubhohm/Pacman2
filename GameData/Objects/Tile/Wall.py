@@ -36,12 +36,18 @@ class Wall(Tile):
         corner_y = self.height * self.get_position().getY()
         self.corner_coordinate.set_value(corner_x, corner_y)
 
+    def get_corner(self):
+        corner_x = self.width * self.get_position().getX()
+        corner_y = self.height * self.get_position().getY()
+        self.corner_coordinate.set_value(corner_x, corner_y)
+
     def select_line_draw_function(self, up_tile, left_tile, right_tile, down_tile):
+        self.get_corner()
         position = self.corner_coordinate
         pos_x = position.getX()
         pos_y = position.getY()
-        mid_y = pos_y + (self.height >> 1)
-        mid_x = pos_x + (self.width >> 1)
+        mid_y = pos_y + int(self.height / 2)
+        mid_x = pos_x + int(self.width / 2)
         bottom_x = pos_x + self.width
         bottom_y = pos_y + self.height
         # Fully enclosed
@@ -67,13 +73,14 @@ class Wall(Tile):
             return
 
     def define_arc(self, start:float, stop:float, width_scale = 1, height_scale = 1, width_shift = 2, height_shift = 2):
+        self.get_corner()
         position = self.corner_coordinate
         pos_x = position.getX()
         pos_y = position.getY()
         self.start = start * PI
         self.end = stop * PI
-        new_x = pos_x + ((self.width >> 1) * width_scale) + width_shift
-        new_y = pos_y + ((self.height >> 1) * height_scale) + height_shift
+        new_x = pos_x + (int(self.width / 2) * width_scale) + width_shift
+        new_y = pos_y + (int(self.height / 2) * height_scale) + height_shift
         self.draw_function = self.draw_arc
         self.corner_coordinate.set_value(new_x, new_y)
 
