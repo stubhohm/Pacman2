@@ -9,8 +9,6 @@ def main():
     pause = False
     while playing:
         input = game.user_input()
-        if input:
-            print(input)
         if input == quit_game:
             playing = False
             continue
