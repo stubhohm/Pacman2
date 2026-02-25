@@ -3,45 +3,95 @@ from ..Tile.TileTypes import Node, Wall, Path, Tile
 from ..Dot.PowerUp import PowerUp, Dot
 
 def make_dot_path():
+    """Creates a dot path tile.
+
+    Returns:
+        Path: A Path tile object.
+    """
     path = make_path()
     path.add_dot(Dot())
     return path
 
 def make_dot_node():
+    """Creates a dot node tile.
+
+    Returns:
+        Node: A Node tile object.
+    """
     node = make_node()
     dot = Dot()
     node.add_dot(dot)
     return node
 
 def make_powerup_path():
+    """Creates a power-up path tile.
+
+    Returns:
+        Path: A Path tile object with a PowerUp attached.
+    """
     path = make_path()
     powerup = PowerUp()
     path.add_dot(powerup)
     return path
 
 def make_powerup_node():
+    """Creates a power-up node tile.
+
+    Returns:
+        Node: A Node tile object with a PowerUp attached.
+    """
     node = make_node()
     node.add_dot(PowerUp())
     return node
 
 def make_wall():
+    """Creates a wall tile.
+
+    Returns:
+        Wall: A Wall tile object.
+    """
     return Wall()
 
 def make_node():
+    """Creates a basic node tile.
+
+    Returns:
+        Node: A Node tile object.
+    """
     return Node()
 
 def make_path():
+    """Creates a basic path tile.
+
+    Returns:
+        Path: A Path tile object.
+    """
     return Path()
 
 def make_tile():
+    """Creates a generic tile.
+
+    Returns:
+        Tile: A Tile object.
+    """
     return Tile()
 
 def make_limited_node():
+    """Creates a dot node tile with limited functionality.
+
+    Returns:
+        Node: A Node tile object.
+    """
     node = make_node()
     node.limited = True
     return node
 
 def make_limited_dot_node():
+    """Creates a path tile with limited functionality.
+
+    Returns:
+        Path: A Path tile object.
+    """
     node = make_limited_node()
     node.add_dot(Dot())
     node.limited = True
@@ -78,7 +128,11 @@ def construct_row(dot_nodes:tuple = (), walls:tuple = (), power_ups:tuple= (),
     return row
 
 def make_grid_array():
+    """Creates the grid array for the game.
 
+    Returns:
+        list: A 2D list representing the game grid.
+    """
     empty_row = []
     wall_row_top = []
     wall_row_bottom = []

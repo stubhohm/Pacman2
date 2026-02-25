@@ -7,6 +7,9 @@ from ..Tile.TileTypes import Tile
 from ..Drawing.Drawing import Drawing
 
 class Actor():
+    """
+    Represents an actor in the game world.
+    """
     velocity_to_direction = {
     (0,-1):up,
     (0,1): down,
@@ -24,6 +27,9 @@ class Actor():
     }
     
     def __init__(self):
+        """
+        Initializes a new Actor instance.
+        """
         self._position:Vector2 = Vector2()
         self._coordiate:Vector2 = Vector2()
         self._target_coordinate:Vector2 = Vector2()
@@ -38,21 +44,57 @@ class Actor():
         self.incriment = True
 
     def is_coordinate(self, test_coordiante:Vector2):
+        """
+        Checks if a given coordinate value is a Vector2 instance.
+        
+        Args:
+            test_coordiante (Vector2): The coordinate value to check.
+        
+        Returns:
+            bool: True if the input is a Vector2 instance, False otherwise.
+        """
         if type(test_coordiante) != Vector2:
             return False
         return True
 
     def is_bool(self, test_state):
+        """
+        Checks if a given value is a boolean.
+        
+        Args:
+            test_state: The value to check.
+        
+        Returns:
+            bool: True if the input is a boolean, False otherwise.
+        """
         if type(test_state) != bool:
             return False
         return True
 
     def is_string(self, test_string):
+        """
+        Checks if a given value is a string.
+        
+        Args:
+            test_string: The value to check.
+        
+        Returns:
+            bool: True if the input is a string, False otherwise.
+        """
         if type(test_string) != str:
             return False
         return True
 
     def is_centered(self, check_both = False):   
+        """
+        Checks if the actor is centered around a tile.
+        
+        Args:
+            check_both (bool, optional): If True, checks both X and Y centering. Defaults to False.
+        
+        Returns:
+            bool: True if the actor is centered, False otherwise.
+        """
         if check_both:
             self._desired_velocity = Vector2(1,0)
             left_right = self.is_centered(False)
@@ -92,6 +134,7 @@ class Actor():
             return False
 
     def get_direction(self):
+
         vel = self.get_velocity().get_value()
         return self.velocity_to_direction.get(vel, None)
 
@@ -171,12 +214,24 @@ class Actor():
             self.set_position(self.get_position(), True)
         
     def get_velocity(self):
+        """
+        Returns the actor's current velocity.
+        """
         return self._velocity
     
     def get_desired_velocity(self):
+        """
+        Returns the actor's desired velocity.
+        """
         return self._desired_velocity
 
     def set_velocity(self, input_direction:str):
+        """
+        Sets the actor's velocity based on a given direction.
+        
+        Args:
+            input_direction (str): The direction to move in.
+        """
         if input_direction in directions:
             x, y = self.direction_to_velocity.get(input_direction)
             self._desired_velocity.set_value(x,y)
@@ -184,14 +239,35 @@ class Actor():
                 self._validate_velocity()
 
     def force_velocity(self, input_direction:str):
+        """
+        Forces the actor to move in a given direction, regardless of the desired velocity.
+        
+        Args:
+            input_direction (str): The direction to force move in.
+        """
         if input_direction in directions:
             x, y = self.direction_to_velocity.get(input_direction)
             self._velocity.set_value(x,y)   
 
     def set_map_grid(self, map_grid):
+        """
+        Sets the map grid for the actor.
+        
+        Args:
+            map_grid: The map grid data.
+        """
         self._map_grid = map_grid   
 
     def get_target_tile(self, velocity:Vector2) -> Tile | None:
+        """
+        Gets the target tile for a given velocity.
+        
+        Args:
+            velocity (Vector2): The velocity to check.
+        
+        Returns:
+            Tile | None: The target tile, or None if no target tile can be found.
+        """
         if not self._map_grid:
             return None
         x_mod, y_mod = velocity.get_value()
@@ -205,7 +281,13 @@ class Actor():
 
     def check_wall_collision(self, target_tile:Tile):
         """
-        returns true if the next tile is not passable
+        Checks if the actor would collide with the target tile.
+        
+        Args:
+            target_tile (Tile): The target tile to check.
+        
+        Returns:
+            bool: True if a collision would occur, False otherwise.
         """
         if not target_tile:
             return True
@@ -232,6 +314,9 @@ class Actor():
         return True  # Move the actor otherwise
 
     def check_teleport(self):
+        """
+        Checks if the actor should teleport to a new location.
+        """
         pos_x = None
         x_position = self.get_coordinate().getX()
         sprite_width = (self.sprite.get_width())
@@ -244,6 +329,9 @@ class Actor():
             self.set_position(Vector2(pos_x, pox_y), True)
 
     def move(self):
+        """
+        Moves the actor based on its velocity.
+        """
         if not self.step_frame():
             return
         # Check to make sure current Velocity does not have actor moving into a wall
@@ -259,9 +347,18 @@ class Actor():
         return 
 
     def draw_sprite(self, surface):
+        """
+        Draws the actor's sprite on a given surface.
+        
+        Args:
+            surface: The surface to draw the sprite on.
+        """
         self.sprite.draw(surface, self.get_sprite_coordinate(), self.incriment)
 
     def dbprint(self):
+        """
+        Prints debugging information to the console.
+        """
         if not DEBUG:
             return
         print(self.get_desired_velocity().get_value())

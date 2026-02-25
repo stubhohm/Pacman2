@@ -9,7 +9,30 @@ from ..Text.PointText import BonusPointText
 from ..Text.Text import Text
 
 class Pacman(Actor):
+    """Represents the Pac-Man character in the game.
+
+    Attributes:
+        actor_type (str): The type of the actor, which is "Player".
+        steps (int): The number of steps taken by Pac-Man.
+        power_up_ending (int): The time at which the power-up effect ends.
+        power_up_duration (int): The duration of the power-up effect in seconds.
+        eaten_ghosts (int): The number of ghosts eaten by Pac-Man.
+        score (int): The current score of Pac-Man.
+        score_text (Text): An object to display the score.
+        full_sprite_sheet (dict): A dictionary containing the sprite images for Pac-Man.
+        power_up (bool): A boolean indicating whether Pac-Man is in a power-up state.
+        update_direction (bool): A boolean indicating whether the sprite rotation needs to be updated.
+        lives (int): The current number of lives of Pac-Man.
+        text_instances (list): A list of BonusPointText objects to display bonus points.
+        sprite_array (list): The sprite array used for rendering Pac-Man's sprite.
+        position (Vector2): The position of Pac-Man.
+    """
     def __init__(self, pacman_dict:dict = {}):
+        """Initializes the Pacman object.
+
+        Args:
+            pacman_dict (dict, optional): A dictionary containing initial game data for Pac-Man. Defaults to {}.
+        """
         super().__init__()
         self.actor_type = "Player"
         self.steps = 0
@@ -29,9 +52,15 @@ class Pacman(Actor):
         self.force_velocity(right)
 
     def define_score_text(self):
+        """Defines the font and text for the score display."""
         self.score_text.define_font(str(self.score), Vector2(5,5), 16, WHITE)
 
     def handle_input(self, input_direction):
+        """Handles user input to control Pac-Man's movement.
+
+        Args:
+            input_direction (str): The input direction from the user.
+        """
         start_vel = self.get_velocity().get_value()
         if input_direction == "p":
             self.print()
@@ -53,6 +82,11 @@ class Pacman(Actor):
             self.update_direction = True
 
     def set_sprite_array(self, direction:str):
+        """Sets the sprite array for Pac-Man based on the given direction.
+
+        Args:
+            direction (str): The direction to set the sprite array.
+        """
         if self.lives == 0:
             self.sprite.sprite_array = self.full_sprite_sheet.get(direction)
         eat_slice = self.full_sprite_sheet.get(direction)[:3]
@@ -61,6 +95,11 @@ class Pacman(Actor):
         self.sprite.sprite_array = eat_slice
 
     def eat_object(self, object_dict:dict[str, any]):
+        """Handles the event when Pac-Man eats an object.
+
+        Args:
+            object_dict (dict): A dictionary containing information about the object eaten.
+        """
         if not object_dict:
             return
         draw = False
@@ -81,6 +120,7 @@ class Pacman(Actor):
             self.power_up_ending = time.time() + self.power_up_duration
 
     def update_bonuspoint_text(self):
+        """Updates the bonus point text objects."""
         for text in list(self.text_instances):
             if not text:
                 self.text_instances.remove(text)
@@ -89,6 +129,7 @@ class Pacman(Actor):
                 self.text_instances.remove(text)
 
     def set_sprite_rotation(self):
+        """Updates the sprite rotation based on the current velocity."""
         self.update_direction = False
         direction = self.velocity_to_direction.get(self.get_velocity().get_value())
         if direction not in self.full_sprite_sheet.keys():
@@ -96,6 +137,11 @@ class Pacman(Actor):
         self.set_sprite_array(direction)
         
     def draw_sprite(self, surface):
+        """Draws the Pac-Man sprite and related text on the surface.
+
+        Args:
+            surface (pygame.Surface): The surface to draw on.
+        """
         if self.update_direction:
             self.set_sprite_rotation()
         super().draw_sprite(surface)
@@ -106,6 +152,7 @@ class Pacman(Actor):
             text.draw_font(surface)
 
     def print(self):
+        """Prints Pac-Man's direction, position, velocity, and target tile to the console."""
         print(self.get_direction())
         print("Pacman pos")
         print(self.get_position().get_value())

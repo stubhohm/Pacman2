@@ -18,15 +18,34 @@ RASPBERRY = Vector3(255, 0, 125)
 
 
 class ColorMixer():
+    """
+    A class for mixing and adjusting colors.
+
+    Attributes:
+        None
+
+    Methods:
+        is_RGB_color(color: Vector3)
+        blend_colors(color_1: Vector3, color_2: Vector3, gradient: float)
+        adjust_color_saturation(color: tuple[int, int, int], saturation: float)
+        adjust_color_brightness(color: tuple[int, int, int], brightness: float)
+    """
     def __init__(self):
         """
-        Has 4 methods.
-        1. is_RGB_color return T/F it is a tuple with 3 int values between 0 and 255
-        2. blend_colors takes two RBG colors as input and a gradient value to blend between them
-        3. adjust_color_saturation takes a color and a saturation value to saturate the color between its full saturation input value and white
-        4. adjust_color_brightness takes a color and a brightness value to dim the color between its full brightness and black
+        Initializes the ColorMixer object.
         """
+        pass
+
     def is_RGB_color(self, color:Vector3):
+        """
+        Checks if a given color is a valid RGB color.
+
+        Args:
+            color (Vector3): The color to check.
+
+        Returns:
+            bool: True if the color is a valid RGB color, False otherwise.
+        """
         if type(color) != Vector3:
             print("not a Vector 3")
             return False
@@ -34,7 +53,15 @@ class ColorMixer():
 
     def blend_colors(self,color_1:Vector3, color_2:Vector3, gradient:float):
         """
-        Put in two color values in RGB and the gradient is a float between 0-1, 0 being fully the first color, 1 being fully the second color.
+        Blends two RGB colors based on a gradient.
+
+        Args:
+            color_1 (Vector3): The first RGB color.
+            color_2 (Vector3): The second RGB color.
+            gradient (float): The blending gradient between 0 and 1.
+
+        Returns:
+            Vector3: The blended RGB color.
         """
         if gradient > 1 or gradient < 0:
             gradient = gradient % 1
@@ -62,13 +89,27 @@ class ColorMixer():
 
     def adjust_color_saturation(self, color:tuple[int,int,int], saturation:float):
         """
-        Input a colors RGB values and a saturation value between 0-1, 0 being white and 1 being the full color.
+        Adjusts the saturation of a color.
+
+        Args:
+            color (tuple[int, int, int]): The RGB color to adjust.
+            saturation (float): The saturation value between 0 and 1.
+
+        Returns:
+            Vector3: The adjusted RGB color.
         """
         return self.blend_colors(WHITE, color, saturation)
 
     def adjust_color_brightness(self, color:tuple[int,int,int], brightness:float):
         """
-        Input a colors RGB values and a brightness value between 0-1, 0 being black and 1 being the full color.
+        Adjusts the brightness of a color.
+
+        Args:
+            color (tuple[int, int, int]): The RGB color to adjust.
+            brightness (float): The brightness value between 0 and 1.
+
+        Returns:
+            Vector3: The adjusted RGB color.
         """
         return self.blend_colors(BLACK, color, brightness)
         

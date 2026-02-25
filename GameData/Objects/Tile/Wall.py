@@ -4,6 +4,7 @@ from ...Keys.Keys import horizontal, vertical
 from ...Keys.Constants import PI, ROWS, COLUMNS
 
 class Wall(Tile):
+    """Represents a Wall tile in a grid-based game."""
     def __init__(self):
         super().__init__()
         self.set_is_passable(False)
@@ -14,6 +15,16 @@ class Wall(Tile):
         self.line_color = BLUE
 
     def pair_matching(self, tile_1, tile_2):
+        """Checks if two adjacent tiles are compatible for wall drawing.
+
+        Args:
+            tile_1: The first tile.
+            tile_2: The second tile.
+
+        Returns:
+            True if the tiles are of the same type (Wall) and are
+            adjacent, False otherwise.
+        """
         if type(tile_1) != type(tile_2): 
             return False
         if type(tile_1) != Wall:
@@ -21,27 +32,56 @@ class Wall(Tile):
         return True
 
     def draw_arc(self, surface):
+        """Draws an arc on the surface using the given parameters.
+
+        Args:
+            surface: The surface to draw on.
+        """
         self.drawing.draw_arc(surface, self.start, self.end, self.corner_coordinate, self.line_color, 5)
 
     def draw_line(self, surface):
+        """Draws a line on the surface using the given parameters.
+
+        Args:
+            surface: The surface to draw on.
+        """
         self.drawing.draw_line(surface, self.start, self.end, self.line_color, 5)
 
     def draw(self, surface):
+        """Draws the wall on the surface using its draw function.
+
+        Args:
+            surface: The surface to draw on.
+        """
         if self.draw_function:
             self.draw_function(surface)
 
     def set_position(self, new_position):
+        """Sets the position of the wall.
+
+        Args:
+            new_position: The new position (Vector2) for the wall.
+        """
         super().set_position(new_position)
         corner_x = self.width * self.get_position().getX()
         corner_y = self.height * self.get_position().getY()
         self.corner_coordinate.set_value(corner_x, corner_y)
 
     def get_corner(self):
+        """Gets the corner coordinate of the wall."""
         corner_x = self.width * self.get_position().getX()
         corner_y = self.height * self.get_position().getY()
         self.corner_coordinate.set_value(corner_x, corner_y)
 
     def select_line_draw_function(self, up_tile, left_tile, right_tile, down_tile):
+        """Selects the line draw function based on the adjacent tiles.
+
+        Args:
+            up_tile: The tile above the wall.
+            left_tile: The tile to the left of the wall.
+            right_tile: The tile to the right of the wall.
+            down_tile: The tile below the wall.
+        """
         self.get_corner()
         position = self.corner_coordinate
         pos_x = position.getX()
@@ -73,6 +113,16 @@ class Wall(Tile):
             return
 
     def define_arc(self, start:float, stop:float, width_scale = 1, height_scale = 1, width_shift = 2, height_shift = 2):
+        """Defines the arc parameters for drawing.
+
+        Args:
+            start: The starting angle of the arc in radians.
+            stop: The stopping angle of the arc in radians.
+            width_scale: The scaling factor for the width of the arc.
+            height_scale: The scaling factor for the height of the arc.
+            width_shift: The horizontal shift for the arc.
+            height_shift: The vertical shift for the arc.
+        """
         self.get_corner()
         position = self.corner_coordinate
         pos_x = position.getX()
@@ -85,6 +135,14 @@ class Wall(Tile):
         self.corner_coordinate.set_value(new_x, new_y)
 
     def select_arc_draw_function(self, up_tile, left_tile, right_tile, down_tile):
+        """Selects the arc draw function based on the adjacent tiles.
+
+        Args:
+            up_tile: The tile above the wall.
+            left_tile: The tile to the left of the wall.
+            right_tile: The tile to the right of the wall.
+            down_tile: The tile below the wall.
+        """
         # Mostly enclosed
         type_list = [type(up_tile), type(left_tile), type(right_tile), type(down_tile)]
         wall_or_tile = (Wall or Tile)
@@ -123,6 +181,12 @@ class Wall(Tile):
             self.define_arc(0.45, 1.05, 1, 1, 0, 0)
         
     def define_wall_draw(self, grid_array, arcs = False):
+        """Draws the wall based on the grid array and arc parameters.
+
+        Args:
+            grid_array: The grid array to use for drawing.
+            arcs: Whether to draw arcs or lines.
+        """
         if self.draw_function:
             return
         x = self.get_position().getX()
